@@ -14,8 +14,9 @@ import androidx.compose.ui.unit.sp
 import com.teamrunus.runus.R
 
 @Composable
-fun MainPageProfileCard(userData: MainPageUserData,
-                        onClick: () -> Unit
+fun MainPageProfileCard(
+    userData: MainPageUserData,
+    onClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -39,25 +40,33 @@ fun MainPageProfileCard(userData: MainPageUserData,
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(userData.nickname, fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
-                Row (
+                Row(
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
-                    ){
-                        Text("러닝", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface, )
-                        Text(userData.totalRunningCount.toString(), fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurface)
+                    ) {
+                        Text("러닝", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
+                        Text(
+                            userData.totalRunningCount.toString(),
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                     }
                     Spacer(modifier = Modifier.size(16.dp))
-                    Column{
+                    Column {
                         Text("달린 거리", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
-                        Text(String.format("%.2f Km", parseToKiloMeters(userData.totalRunningDistanceInMeters)), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
+                        Text(
+                            String.format(
+                                "%.2f Km",
+                                parseToKiloMeters(userData.totalRunningDistanceInMeters)
+                            ), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface
+                        )
                     }
                 }
             }
         }
     }
 }
-
 
 
 fun parseToKiloMeters(totalDistanceInMeters: Long): Double {
@@ -67,7 +76,7 @@ fun parseToKiloMeters(totalDistanceInMeters: Long): Double {
 data class MainPageUserData(
     val nickname: String,
     val totalRunningCount: Long,
-    val totalRunningDistanceInMeters:Long,
+    val totalRunningDistanceInMeters: Long,
 ) {
 
 }

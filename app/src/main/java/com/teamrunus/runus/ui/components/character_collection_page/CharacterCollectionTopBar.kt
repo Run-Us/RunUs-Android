@@ -14,7 +14,7 @@ import com.teamrunus.runus.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterCollectionTopBar (
+fun CharacterCollectionTopBar(
     title: String,
     distance: String,
     navController: NavHostController

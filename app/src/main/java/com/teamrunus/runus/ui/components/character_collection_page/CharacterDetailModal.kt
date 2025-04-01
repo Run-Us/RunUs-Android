@@ -34,9 +34,9 @@ fun CharacterDetailModal(character: CharacterData, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Column (
+            Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-            ){
+            ) {
                 Text(
                     text = "[${character.name}]",
                     fontSize = 24.sp,
@@ -65,18 +65,18 @@ fun CharacterDetailModal(character: CharacterData, onDismiss: () -> Unit) {
                     tint = Color.Unspecified
 
                 )
-                Row (
+                Row(
                     horizontalArrangement = Arrangement.Center
-                ){
+                ) {
                     Text(text = "러닝 횟수: ${runimoDetail.runningCount}")
                     Spacer(modifier = Modifier.padding(4.dp))
                     Text(text = "달린 거리: ${runimoDetail.totalRunningDistanceInMeters} km")
                 }
-                Row (
+                Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
 
-                ){
+                    ) {
                     Button(onClick = onDismiss) {
                         Text("설정하기")
                     }
@@ -94,6 +94,7 @@ fun CharacterDetailModal(character: CharacterData, onDismiss: () -> Unit) {
         }
     )
 }
+
 fun loadUserRunimoData(): UserRunimoData {
     return UserRunimoData(
         name = "example",
@@ -104,11 +105,10 @@ fun loadUserRunimoData(): UserRunimoData {
 }
 
 // 사용자마다 특정 러니모와 달린 기록이 다름.
-data class UserRunimoData (
+data class UserRunimoData(
     val name: String,
     val description: String,
     val runningCount: Long,
     val totalRunningDistanceInMeters: Long
-)
-{
+) {
 }
