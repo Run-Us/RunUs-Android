@@ -4,10 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -17,15 +16,19 @@ data class EggInfo(
     val hasEgg: Boolean = false,
     val eggName: String,
     val currentLovePoint: Long = 0,
-    val requiredLovePoint: Long = 0
+    val requiredLovePoint: Long = 0,
+    val isReadyToHatch: Boolean = false
 )
 
 @Composable
 fun EggCard(
     eggInfo: EggInfo,
     onRegisterClick: () -> Unit,
-    onLoveClick: () -> Unit
+    onLoveClick: () -> Unit,
+    onHatchClick: () -> Unit
 ) {
+    var showHatchingModal by remember { mutableStateOf(false) }
+
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp),
@@ -41,16 +44,30 @@ fun EggCard(
             verticalArrangement = Arrangement.Center
         ) {
             if (eggInfo.hasEgg) {
-                EggContent(eggInfo, onLoveClick)
+                EggContent(eggInfo)
+                EggActionButton(
+                    isReadyToHatch = eggInfo.isReadyToHatch,
+                    onLoveClick = onLoveClick,
+                    onHatchClick = {
+                        showHatchingModal = true
+                        onHatchClick()
+                    }
+                )
+                if (showHatchingModal) {
+                    EggHatchingModal(
+                        onConfirmClick = { showHatchingModal = false },
+                        onDismiss = { showHatchingModal = false }
+                    )
+                }
             } else {
-                EmptyIncubatorContent(onRegisterClick)
+                EmptyEggContent(onRegisterClick)
             }
         }
     }
 }
 
 @Composable
-private fun EggContent(eggInfo: EggInfo, onLoveClick: () -> Unit) {
+fun EggContent(eggInfo: EggInfo) {
     Image(
         painter = painterResource(id = R.drawable.egg),
         contentDescription = "Egg",
@@ -65,39 +82,31 @@ private fun EggContent(eggInfo: EggInfo, onLoveClick: () -> Unit) {
         color = MaterialTheme.colorScheme.primary
     )
     Spacer(modifier = Modifier.height(4.dp))
-
-    val progress = eggInfo.currentLovePoint.toFloat() / eggInfo.requiredLovePoint.coerceAtLeast(1).toFloat()
-
     Text(
         text = "${eggInfo.currentLovePoint}/${eggInfo.requiredLovePoint}",
         fontSize = 14.sp,
         color = MaterialTheme.colorScheme.onSurface
     )
-    Spacer(modifier = Modifier.height(4.dp))
+}
 
-    LinearProgressIndicator(
-        progress = { progress },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(8.dp)
-            .padding(horizontal = 16.dp),
-        color = MaterialTheme.colorScheme.primary,
-        trackColor = Color(0xFFE0E0E0),
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-
+@Composable
+fun EggActionButton(
+    isReadyToHatch: Boolean,
+    onLoveClick: () -> Unit,
+    onHatchClick: () -> Unit
+) {
     Button(
-        onClick = onLoveClick,
+        onClick = { if (isReadyToHatch) onHatchClick() else onLoveClick() },
         modifier = Modifier
             .fillMaxWidth(0.8f)
             .padding(top = 8.dp)
     ) {
-        Text("애정 주기")
+        Text(if (isReadyToHatch) "알 부화하기" else "애정 주기")
     }
 }
 
 @Composable
-private fun EmptyIncubatorContent(onRegisterClick: () -> Unit) {
+fun EmptyEggContent(onRegisterClick: () -> Unit) {
     Image(
         painter = painterResource(id = R.drawable.empty_incubator),
         contentDescription = "Empty Incubator",
