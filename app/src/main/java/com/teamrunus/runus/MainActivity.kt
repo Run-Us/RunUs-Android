@@ -1,29 +1,29 @@
 package com.teamrunus.runus
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.teamrunus.runus.ui.components.common.BottomNavBar
 import com.teamrunus.runus.ui.theme.RunUsTheme
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController() // 전역 NavController
             RunUsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Scaffold(
+                    bottomBar = { BottomNavBar(navController) } // NavBar에서 동일한 NavController 사용
+                ) {
+                    Navigationgraph(navController) // NavGraph에 전달
                 }
             }
         }
@@ -41,7 +41,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
+    val navController = rememberNavController()
     RunUsTheme {
-        Greeting("Android")
+        Navigationgraph(navController)
     }
 }
