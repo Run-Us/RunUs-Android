@@ -46,11 +46,13 @@ fun MainScreen(navController: NavHostController) {
                 eggInfo = EggInfo(
                     hasEgg = data.hasIncubatingEgg,
                     eggName = "마당 알",
-                    currentLovePoint = 3,
-                    requiredLovePoint = 10
+                    currentLovePoint = 10,
+                    requiredLovePoint = 10,
+                    isReadyToHatch = true
                 ),
                 onRegisterClick = { showModal = true },
-                onLoveClick = { println("애정 주기 실행") }
+                onLoveClick = { println("애정 주기 실행") },
+                onHatchClick = { println("부화하기 실행") }
             )
             if (showModal) {
                 EggRegisterModal(
